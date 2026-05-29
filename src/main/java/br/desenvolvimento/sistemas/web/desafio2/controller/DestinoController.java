@@ -47,5 +47,20 @@ public class DestinoController {
         destinoService.deletar(id);
         return ResponseEntity.noContent().build();
     }
-}
 
+    @PatchMapping("/{id}/avaliar")
+    public ResponseEntity<Destino> avaliar(@PathVariable Long id, @RequestParam Integer nota) {
+        try {
+            return ResponseEntity.ok(destinoService.avaliar(id, nota));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Destino>> pesquisar(@RequestParam(required = false) String nome,
+            @RequestParam(required = false) String pais) {
+        return ResponseEntity.ok(destinoService.pesquisar(nome, pais));
+    }
+
+}

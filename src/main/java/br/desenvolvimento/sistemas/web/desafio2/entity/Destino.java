@@ -18,6 +18,15 @@ public class Destino {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "avaliacoes")
+    private Integer quantidadeAvaliacoes;
+
+    @Column(name = "soma_avaliacoes")
+    private Integer somaAvaliacoes;
+
+    @Column(name = "media_avaliacoes")
+    private Double mediaAvaliacoes;
+
     @Column(nullable = false)
     private String nome;
 

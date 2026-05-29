@@ -12,5 +12,8 @@ public interface DestinoRepository extends JpaRepository<Destino, Long> {
     List<Destino> findByPaisIgnoreCase(String pais);
 
     List<Destino> findByNomeContainingIgnoreCase(String nome);
-}
 
+    List<Destino> findByPaisContainingIgnoreCase(String pais);
+
+    List<Destino> findByNomeContainingIgnoreCaseAndPaisContainingIgnoreCase(String nome, String pais);
+}
