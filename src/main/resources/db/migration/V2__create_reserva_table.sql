@@ -1,5 +1,5 @@
 CREATE TABLE reserva (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     nome_cliente VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     data_reserva TIMESTAMP NOT NULL,

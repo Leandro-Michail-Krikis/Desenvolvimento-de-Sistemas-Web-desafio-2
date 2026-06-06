@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "destino")
@@ -32,5 +33,18 @@ public class Destino {
 
     @Column(name = "data_atualizacao")
     private LocalDateTime dataAtualizacao;
+
+    @Column(name = "nota_media")
+    private Double notaMedia = 0.0;
+
+    @Column(name = "total_notas")
+    private Integer totalNotas = 0;
+
+    @OneToMany(
+            mappedBy = "destino",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Nota> notas;
 }
 

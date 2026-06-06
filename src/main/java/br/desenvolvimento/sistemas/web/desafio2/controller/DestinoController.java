@@ -1,7 +1,11 @@
 package br.desenvolvimento.sistemas.web.desafio2.controller;
 
+import br.desenvolvimento.sistemas.web.desafio2.dto.request.AvaliacaoRequest;
+import br.desenvolvimento.sistemas.web.desafio2.dto.request.DestinoRequest;
 import br.desenvolvimento.sistemas.web.desafio2.entity.Destino;
 import br.desenvolvimento.sistemas.web.desafio2.service.DestinoService;
+import br.desenvolvimento.sistemas.web.desafio2.service.NotaService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,31 +19,44 @@ import java.util.List;
 public class DestinoController {
 
     private final DestinoService destinoService;
+    private final NotaService notaService;
 
     @GetMapping
     public ResponseEntity<List<Destino>> listarTodos() {
         return ResponseEntity.ok(destinoService.listarTodos());
     }
 
+    @GetMapping("/buscar")
+    public ResponseEntity<List<Destino>> buscar(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String pais) {
+        if (nome != null && !nome.isEmpty()) {
+            return ResponseEntity.ok(destinoService.buscarPorNome(nome));
+        }
+        if (pais != null && !pais.isEmpty()) {
+            return ResponseEntity.ok(destinoService.buscarPorPais(pais));
+        }
+        return ResponseEntity.ok(destinoService.listarTodos());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Destino> buscarPorId(@PathVariable Long id) {
-        return destinoService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(destinoService.buscarPorId(id));
     }
 
     @PostMapping
-    public ResponseEntity<Destino> criar(@RequestBody Destino destino) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(destinoService.salvar(destino));
+    public ResponseEntity<Destino> criar(@Valid @RequestBody DestinoRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(destinoService.salvar(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Destino> atualizar(@PathVariable Long id, @RequestBody Destino destino) {
-        try {
-            return ResponseEntity.ok(destinoService.atualizar(id, destino));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Destino> atualizar(@PathVariable Long id, @Valid @RequestBody DestinoRequest request) {
+        return ResponseEntity.ok(destinoService.atualizar(id, request));
+    }
+
+    @PatchMapping("/{id}/avaliar")
+    public ResponseEntity<Destino> avaliar(@PathVariable Long id, @Valid @RequestBody AvaliacaoRequest request) {
+        return ResponseEntity.ok(notaService.avaliar(id, request.getValor()));
     }
 
     @DeleteMapping("/{id}")

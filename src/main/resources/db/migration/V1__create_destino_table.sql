@@ -1,5 +1,5 @@
 CREATE TABLE destino (
-    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id          BIGSERIAL PRIMARY KEY,
     nome        VARCHAR(255) NOT NULL,
     descricao   TEXT,
     pais        VARCHAR(100) NOT NULL,
